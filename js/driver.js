@@ -44,17 +44,15 @@ function start() {
     setInterval(tickHandler, 500);
     
     document.addEventListener('keydown', function(event) {
-        switch(event.which) {
-            case 40: // down
+        switch(event.key) {
+            case "ArrowDown": // down
                 engine.down();
                 break;
-            case 37: //left
-                engine.state.curX--;
-                //engine.left();
+            case "ArrowLeft": //left
+                engine.left();
                 break;
-            case 39: //right
-                engine.state.curX++;
-                //engine.right();
+            case "ArrowRight": //right
+                engine.right();
                 break;
         }
     });
