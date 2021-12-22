@@ -9,4 +9,11 @@ function tetris_state(width, height) {
             this.board[i][j] = 0;
         }
     }
+
+    let rng = new piece_rng();
+    this.curPiece = rng.gen();
+    this.nextPieces = new Array(NUM_NEXT_PIECES);
+    for (let i = 0; i < NUM_NEXT_PIECES; i++) {
+        this.nextPieces[i] = rng.gen();
+    }
 }
