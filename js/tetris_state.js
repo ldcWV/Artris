@@ -16,4 +16,8 @@ function tetris_state(width, height) {
     for (let i = 0; i < NUM_NEXT_PIECES; i++) {
         this.nextPieces[i] = rng.gen();
     }
+
+    this.curX = BOARD_WIDTH/2 - 2;
+    this.curY = BOARD_HEIGHT-3;
+    this.curRot = 0;
 }
