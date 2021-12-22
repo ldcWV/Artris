@@ -21,6 +21,74 @@ tetris_engine.prototype.newFallingPiece = function() {
     this.state.curRot = 0;
 }
 
+tetris_engine.prototype.squareEmpty = function(x, y) {
+    if (x < 0 || x >= BOARD_WIDTH || y < 0) return false;
+    if (y >= BOARD_HEIGHT) return true;
+    if (this.state.board[x][y]) return false;
+    return true;
+}
+
+tetris_engine.prototype.intersectionExists = function() {
+    let piece = this.state.curPiece;
+    let rot = this.state.curRot;
+    for (let i = 0; i < PIECES[piece][rot].length; i++) {
+        for (let j = 0; j < PIECES[piece][rot][i].length; j++) {
+            if (PIECES[piece][rot][i][j]) {
+                let x = this.state.curX + i;
+                let y = this.state.curY + j;
+                if (!this.squareEmpty(x, y)) return true;
+            }
+        }
+    }
+    return false;
+}
+
+tetris_engine.prototype.freeze = function() {
+    let piece = this.state.curPiece;
+    let rot = this.state.curRot;
+    for (let i = 0; i < PIECES[piece][rot].length; i++) {
+        for (let j = 0; j < PIECES[piece][rot][i].length; j++) {
+            if (PIECES[piece][rot][i][j]) {
+                let x = this.state.curX + i;
+                let y = this.state.curY + j;
+                this.state.board[x][y] = piece;
+            }
+        }
+    }
+}
+
 tetris_engine.prototype.tick = function() {
     this.state.curY--;
+    if (this.intersectionExists()) {
+        this.state.curY++;
+        this.freeze();
+        this.newFallingPiece();
+    }
+}
+
+tetris_engine.prototype.left = function() {
+    this.state.curX--;
+    if (this.intersectionExists()) {
+        this.state.curX++;
+        return false;
+    }
+    return true;
+}
+
+tetris_engine.prototype.right = function() {
+    this.state.curX++;
+    if (this.intersectionExists()) {
+        this.state.curX--;
+        return false;
+    }
+    return true;
+}
+
+tetris_engine.prototype.down = function() {
+    while (!this.intersectionExists()) {
+        this.state.curY--;
+    }
+    this.state.curY++;
+    this.freeze();
+    this.newFallingPiece();
 }

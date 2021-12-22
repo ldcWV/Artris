@@ -7,12 +7,10 @@ function start() {
     let gameCanvas = document.getElementById('game-canvas');
     gameCanvas.width = canvas_width;
     gameCanvas.height = canvas_height;
-    let gameContext = gameCanvas.getContext('2d');
+    let gameContext = gameCanvas.getContext('2d', {alpha: false});
 
     function draw(state) {
-        function fillSquare(i, j) {
-            gameContext.fillRect(i*tile_size_px, tile_size_px*(BOARD_HEIGHT-j-1), tile_size_px, tile_size_px);
-        }
+        gameContext.save();
 
         gameContext.fillStyle = BG_COLOR;
         gameContext.fillRect(0,0,canvas_width-sidebar_width_px,canvas_height);
@@ -20,7 +18,7 @@ function start() {
             for (let j = 0; j < BOARD_HEIGHT; j++) {
                 if (state.board[i][j] != 0) {
                     gameContext.fillStyle = PIECE_COLORS[state.board[i][j]];
-                    fillSquare(i, j);
+                    gameContext.fillRect(i*tile_size_px, tile_size_px*(BOARD_HEIGHT-j-1), tile_size_px, tile_size_px);
                 }
             }
         }
@@ -30,18 +28,34 @@ function start() {
                     let x = state.curX + i;
                     let y = state.curY + j;
                     gameContext.fillStyle = PIECE_COLORS[state.curPiece];
-                    fillSquare(x, y);
+                    gameContext.fillRect(x*tile_size_px, tile_size_px*(BOARD_HEIGHT-y-1), tile_size_px, tile_size_px);
                 }
             }
         }
+        gameContext.restore();
     }
 
-    // Test code
     let engine = new tetris_engine();
 
-    function tick_handler() {
+    function tickHandler() {
         engine.tick();
         draw(engine.state);
     }
-    setInterval(tick_handler, 500);
+    setInterval(tickHandler, 500);
+    
+    document.addEventListener('keydown', function(event) {
+        switch(event.which) {
+            case 40: // down
+                engine.down();
+                break;
+            case 37: //left
+                engine.state.curX--;
+                //engine.left();
+                break;
+            case 39: //right
+                engine.state.curX++;
+                //engine.right();
+                break;
+        }
+    });
 }
