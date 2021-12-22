@@ -37,12 +37,11 @@ function start() {
     }
 
     // Test code
-    let rng = new piece_rng();
-    let state = new tetris_state(BOARD_WIDTH, BOARD_HEIGHT);
-    for (let i = 0; i < BOARD_WIDTH; i++) {
-        for (let j = 0; j < BOARD_HEIGHT/2; j++) {
-            state.board[i][j] = rng.gen();
-        }
+    let engine = new tetris_engine();
+
+    function tick_handler() {
+        engine.tick();
+        draw(engine.state);
     }
-    draw(state);
+    setInterval(tick_handler, 500);
 }
