@@ -10,10 +10,11 @@ function start() {
     let gameContext = gameCanvas.getContext('2d', {alpha: false});
 
     function draw(state) {
-        gameContext.save();
-
+        // background
         gameContext.fillStyle = BG_COLOR;
         gameContext.fillRect(0,0,canvas_width-sidebar_width_px,canvas_height);
+
+        // current squares on board
         for (let i = 0; i < BOARD_WIDTH; i++) {
             for (let j = 0; j < BOARD_HEIGHT; j++) {
                 if (state.board[i][j] != 0) {
@@ -22,6 +23,8 @@ function start() {
                 }
             }
         }
+
+        // falling piece
         for (let i = 0; i < PIECES[state.curPiece][state.curRot].length; i++) {
             for (let j = 0; j < PIECES[state.curPiece][state.curRot][i].length; j++) {
                 if (PIECES[state.curPiece][state.curRot][i][j]) {
@@ -32,7 +35,6 @@ function start() {
                 }
             }
         }
-        gameContext.restore();
     }
 
     let engine = new tetris_engine();
@@ -45,14 +47,17 @@ function start() {
     
     document.addEventListener('keydown', function(event) {
         switch(event.key) {
-            case "ArrowDown": // down
+            case "ArrowDown":
                 engine.down();
+                draw(engine.state);
                 break;
-            case "ArrowLeft": //left
+            case "ArrowLeft":
                 engine.left();
+                draw(engine.state);
                 break;
-            case "ArrowRight": //right
+            case "ArrowRight":
                 engine.right();
+                draw(engine.state);
                 break;
         }
     });
