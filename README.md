@@ -1,1 +1,1 @@
-# TetrisAI
+# Artris
