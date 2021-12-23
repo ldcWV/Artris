@@ -57,11 +57,35 @@ tetris_engine.prototype.freeze = function() {
     }
 }
 
+tetris_engine.prototype.clearEmptyRows = function() {
+    let cnt = 0;
+    for (let y = 0; y < BOARD_HEIGHT; y++) {
+        let full = true;
+        for (let x = 0; x < BOARD_WIDTH; x++) {
+            if (this.state.board[x][y] == PIECE_NULL) full = false;
+        }
+        if (full) {
+            for (let x = 0; x < BOARD_WIDTH; x++) {
+                this.state.board[x][y] = PIECE_NULL;
+            }
+            cnt++;
+        } else {
+            for (let x = 0; x < BOARD_WIDTH; x++) {
+                this.state.board[x][y - cnt] = this.state.board[x][y];
+                if (cnt != 0) this.state.board[x][y] = PIECE_NULL;
+            }
+        }
+    }
+    console.log(cnt);
+    return cnt;
+}
+
 tetris_engine.prototype.tick = function() {
     this.state.curY--;
     if (this.intersectionExists()) {
         this.state.curY++;
         this.freeze();
+        this.clearEmptyRows();
         this.newFallingPiece();
     }
 }
@@ -90,5 +114,46 @@ tetris_engine.prototype.down = function() {
     }
     this.state.curY++;
     this.freeze();
+    this.clearEmptyRows();
     this.newFallingPiece();
+}
+
+tetris_engine.prototype.try_wallkicks = function(wallkicks) {
+    for (let i = 0; i < wallkicks.length; i++) {
+        this.state.curX += wallkicks[i][0];
+        this.state.curY += wallkicks[i][1];
+        if (!this.intersectionExists()) {
+            return true;
+        }
+        this.state.curX -= wallkicks[i][0];
+        this.state.curY -= wallkicks[i][1];
+    }
+    return false;
+}
+
+tetris_engine.prototype.rotateRight = function() {
+    let oldRot = this.state.curRot;
+    this.state.curRot = (this.state.curRot + 1) % 4;
+    if (!this.intersectionExists()) return true;
+    let res = this.try_wallkicks(this.state.curPiece == PIECE_I ? WALLKICK_I_90[oldRot] : WALLKICK_NORMAL_90[oldRot]);
+    if (!res) this.state.curRot = oldRot;
+    return res;
+}
+
+tetris_engine.prototype.rotate180 = function() {
+    let oldRot = this.state.curRot;
+    this.state.curRot = (this.state.curRot + 2) % 4;
+    if (!this.intersectionExists()) return true;
+    let res = this.try_wallkicks(this.state.curPiece == PIECE_I ? WALLKICK_I_180[oldRot] : WALLKICK_NORMAL_180[oldRot]);
+    if (!res) this.state.curRot = oldRot;
+    return res;
+}
+
+tetris_engine.prototype.rotateLeft = function() {
+    let oldRot = this.state.curRot;
+    this.state.curRot = (this.state.curRot + 3) % 4;
+    if (!this.intersectionExists()) return true;
+    let res = this.try_wallkicks(this.state.curPiece == PIECE_I ? WALLKICK_I_270[oldRot] : WALLKICK_NORMAL_270[oldRot]);
+    if (!res) this.state.curRot = oldRot;
+    return res;
 }

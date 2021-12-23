@@ -13,3 +13,10 @@ function tetris_state() {
     this.curRot = null;
     this.nextPieces = null;
 }
+
+tetris_state.prototype.getHeight = function(x) {
+    for (let y = BOARD_HEIGHT-1; y >= 0; y--) {
+        if (this.board[x][y]) return y+1;
+    }
+    return 0;
+}
