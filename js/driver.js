@@ -98,6 +98,10 @@ function start() {
                 engine.rotateLeft();
                 draw(engine.state);
                 break;
+            case "r":
+                engine.restart();
+                draw(engine.state);
+                break;
         }
     });
 }

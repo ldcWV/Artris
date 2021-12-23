@@ -24,7 +24,7 @@ tetris_engine.prototype.newFallingPiece = function() {
 tetris_engine.prototype.squareEmpty = function(x, y) {
     if (x < 0 || x >= BOARD_WIDTH || y < 0) return false;
     if (y >= BOARD_HEIGHT) return true;
-    if (this.state.board[x][y]) return false;
+    if (this.state.board[x][y] != PIECE_NULL) return false;
     return true;
 }
 
@@ -156,4 +156,16 @@ tetris_engine.prototype.rotateLeft = function() {
     let res = this.try_wallkicks(this.state.curPiece == PIECE_I ? WALLKICK_I_270[oldRot] : WALLKICK_NORMAL_270[oldRot]);
     if (!res) this.state.curRot = oldRot;
     return res;
+}
+
+tetris_engine.prototype.restart = function() {
+    for (let i = 0; i < BOARD_WIDTH; i++) {
+        for (let j = 0; j < BOARD_HEIGHT; j++) {
+            this.state.board[i][j] = PIECE_NULL;
+        }
+    }
+    for (let i = 0; i < NUM_NEXT_PIECES; i++) {
+        this.state.nextPieces[i] = this.rng.gen();
+    }
+    this.newFallingPiece();
 }
