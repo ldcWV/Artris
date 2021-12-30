@@ -41,7 +41,7 @@ function evaluate(state) {
         return res;
     }
 
-    return -aggregateHeight() - 5*holes() - bumpiness();
+    return -.51*aggregateHeight() - .36*holes() - .18*bumpiness();
 }
 
 const MOVE_LEFT = 0;
