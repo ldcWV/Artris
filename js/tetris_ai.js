@@ -41,7 +41,7 @@ function evaluate(state) {
         return res;
     }
 
-    return -aggregateHeight() - holes() - bumpiness();
+    return -aggregateHeight() - 5*holes() - bumpiness();
 }
 
 const MOVE_LEFT = 0;
@@ -95,7 +95,6 @@ tetris_ai.prototype.plan_moves = function() {
                     }
                 }
             }
-            console.log(res);
             return res;
         }
     }
@@ -104,7 +103,6 @@ tetris_ai.prototype.plan_moves = function() {
     for (let i = 0; i < best_plan.length; i++) {
         this.move_queue.push(best_plan[i]);
     }
-    console.log(this.move_queue);
 }
 
 tetris_ai.prototype.move = function() {
@@ -112,7 +110,6 @@ tetris_ai.prototype.move = function() {
         this.plan_moves();
     }
     let move = this.move_queue.shift(); // pop out the move
-    console.log(move);
     switch (move) {
         case MOVE_LEFT:
             this.engine.left();
