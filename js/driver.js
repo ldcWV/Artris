@@ -62,14 +62,22 @@ function start() {
     }
 
     let engine = new tetris_engine();
+    let ai = new tetris_ai(engine);
 
     function tickHandler() {
         engine.tick();
-        draw(engine.state);
+        //draw(engine.state);
     }
     setInterval(tickHandler, 500);
+
+    function tmp() {
+        draw(engine.state);
+    }
+    setInterval(tmp, 100);
+
+    ai.start();
     
-    document.addEventListener('keydown', function(event) {
+    /*document.addEventListener('keydown', function(event) {
         switch(event.key) {
             case "Down": // IE/Edge specific
             case "ArrowDown":
@@ -103,5 +111,5 @@ function start() {
                 draw(engine.state);
                 break;
         }
-    });
+    });*/
 }

@@ -13,7 +13,7 @@ const PIECE_L = 7;
 
 const NUM_NEXT_PIECES = 3;
 
-const BG_COLOR = 'rgb(64,64,64)';
+const BG_COLOR = 'rgb(100,100,100)';
 const PIECE_COLORS = ['', 'rgb(0,255,255)','rgb(255,255,0)','rgb(102,0,204)','rgb(0,255,0)','rgb(255,0,0)','rgb(0,0,255)','rgb(255,153,0)'];
 
 // https://tetris.fandom.com/wiki/SRS?file=SRS-pieces.png

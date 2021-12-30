@@ -20,3 +20,25 @@ tetris_state.prototype.getHeight = function(x) {
     }
     return 0;
 }
+
+tetris_state.prototype.clone = function() {
+    let res = new tetris_state();
+    for (let i = 0; i < BOARD_WIDTH; i++) {
+        for (let j = 0; j < BOARD_HEIGHT; j++) {
+            res.board[i][j] = this.board[i][j];
+        }
+    }
+    res.curPiece = this.curPiece;
+    res.curX = this.curX;
+    res.curY = this.curY;
+    res.curRot = this.curRot;
+    if (this.nextPieces == null) {
+        res.nextPieces = null;
+    } else {
+        res.nextPieces = new Array(this.nextPieces.length);
+        for (let i = 0; i < this.nextPieces.length; i++) {
+            res.nextPieces[i] = this.nextPieces[i];
+        }
+    }
+    return res;
+}

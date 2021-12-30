@@ -76,7 +76,6 @@ tetris_engine.prototype.clearEmptyRows = function() {
             }
         }
     }
-    console.log(cnt);
     return cnt;
 }
 
