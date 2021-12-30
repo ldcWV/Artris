@@ -99,7 +99,7 @@ tetris_ai.prototype.plan_moves = function() {
         }
     }
     
-    let best_plan = eval(this.engine.state, 1)[1];
+    let best_plan = eval(this.engine.state, 2)[1];
     for (let i = 0; i < best_plan.length; i++) {
         this.move_queue.push(best_plan[i]);
     }
@@ -133,5 +133,5 @@ tetris_ai.prototype.move = function() {
 }
 
 tetris_ai.prototype.start = function() {
-    setInterval(this.move.bind(this), 200);
+    setInterval(this.move.bind(this), 50);
 }

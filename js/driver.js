@@ -73,7 +73,7 @@ function start() {
     function tmp() {
         draw(engine.state);
     }
-    setInterval(tmp, 100);
+    setInterval(tmp, 10);
 
     ai.start();
     
